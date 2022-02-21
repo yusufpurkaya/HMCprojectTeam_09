@@ -1,4 +1,5 @@
 package tests.us0005;
+import com.github.javafaker.Faker;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.Set;
 public class Us0005 extends TestBaseRapor{
     HotelMyCampPage hotelmycamppage;
-    TakesScreenshot takesScreenshot;
+    Faker faker=new Faker();
     Alert alert;
     @Test
     public void testCase01() throws IOException {
@@ -33,9 +34,6 @@ public class Us0005 extends TestBaseRapor{
         extentTest.pass("Gecerli password girildi");
         hotelmycamppage.loginButtonElement.click();
         extentTest.pass("Siteye giris icin log in butonuna tiklandi");
-    }
-    @Test
-    public void testCase02() {
         hotelmycamppage.hotelManagementButtonElement.click();
         extentTest.pass("Hotel Management butonuna tiklandi");
         hotelmycamppage.hotelListButonu.click();
@@ -45,9 +43,6 @@ public class Us0005 extends TestBaseRapor{
         String expectedYaziListOfHotel = "List of Hotel";
         System.out.println(expectedYaziListOfHotel);
         extentTest.pass("List Of Hotel yazisi goruldu");
-    }
-    @Test
-    public void testCase03() {
         //3- "Details" butonuna tıklayabilmeli ve cikan sayfada "Edit hotel" yazisi kontrol edilmeli.
         hotelmycamppage.detailsButonu.click();
         ReusableMethods.waitFor(1);
@@ -67,31 +62,28 @@ public class Us0005 extends TestBaseRapor{
         Driver.getDriver().switchTo().window(ikincisayfaHandleDegeri);
         ReusableMethods.waitFor(2);
         extentTest.pass("Yeni sayfaya gecildi");
-    }
-    @Test
-    public void testCase04() {
         // 4- "Code,Name,Adress,Phone,Email,Group" secenekleri güncellenebilmeli "Save" butonuna tıklanabilmeli.
         hotelmycamppage.codeKutusuWebElement.clear();
-        hotelmycamppage.codeKutusuWebElement.sendKeys("H111");
+        hotelmycamppage.codeKutusuWebElement.sendKeys(faker.number().digit());
         ReusableMethods.waitFor(1);
         extentTest.pass("Code box yeni veri girildi");
         hotelmycamppage.nameKutusuWebElement.clear();
-        hotelmycamppage.nameKutusuWebElement.sendKeys("Green Florida Hotel");
+        hotelmycamppage.nameKutusuWebElement.sendKeys(faker.company().name());
         ReusableMethods.waitFor(1);
         extentTest.pass("Guncel otel ismi girildi");
         hotelmycamppage.addressButonu.clear();
-        hotelmycamppage.addressButonu.sendKeys("Florida,USA");
+        hotelmycamppage.addressButonu.sendKeys(faker.address().state());
         ReusableMethods.waitFor(1);
         extentTest.pass("Adres bilgisi girildi");
         hotelmycamppage.phoneButtonu.clear();
-        hotelmycamppage.phoneButtonu.sendKeys("+1 917 800 111");
+        hotelmycamppage.phoneButtonu.sendKeys(faker.phoneNumber().phoneNumber());
         ReusableMethods.waitFor(1);
         extentTest.pass("Telefon numarasi girildi");
         JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
         js.executeScript("arguments[0].scrollIntoView()", hotelmycamppage.emailButonu);
         ReusableMethods.waitFor(1);
         hotelmycamppage.emailButonu.clear();
-        hotelmycamppage.emailButonu.sendKeys("greenfloridahotel@outlook.com");
+        hotelmycamppage.emailButonu.sendKeys(faker.internet().emailAddress());
         ReusableMethods.waitFor(1);
         extentTest.pass("Email adresi girildi");
         ReusableMethods.waitFor(1);
@@ -99,9 +91,6 @@ public class Us0005 extends TestBaseRapor{
         select.selectByVisibleText("Hotel Type2");
         hotelmycamppage.saveButonu.click();
         extentTest.pass("Hotel Type secildi");
-    }
-    @Test
-    public void testCase05() throws IOException {
         //  5- "Hotel was updated successfully" yazısı görülebilmeli ve "Ok" Butonu tıklanılabilmeli.
         ReusableMethods.waitFor(1);
         Assert.assertTrue(hotelmycamppage.htlwasupdatedsuccessfulyYazi.isDisplayed());
@@ -118,9 +107,6 @@ public class Us0005 extends TestBaseRapor{
         ReusableMethods.waitFor(1);
         hotelmycamppage.hotelguncelBasariliOKbuton.click();
         ReusableMethods.waitFor(1);
-    }
-    @Test
-    public void testCase06() {
         // 6- "Delete" butonuna tıklanılabilmeli "Would you like to continue?" yazısının görünürlüğü test edilmeli.
         hotelmycamppage.guncellemedenSonraDeleteButon.click();
         ReusableMethods.waitForVisibility(hotelmycamppage.wldyliketoContinueYazi, 2);
@@ -129,9 +115,6 @@ public class Us0005 extends TestBaseRapor{
         System.out.println(expectedAlertYazisiSonSayfa);
         extentTest.pass("Delete butonu tiklandi,Would you like to continue yazisi goruldu");
         ReusableMethods.waitFor(1);
-    }
-    @Test
-    public void testCase07(){
         //  7- Hotel successfully deleted yazisi gorunmeli,"Ok" butonu tiklanabilir olmali ve otel bilgisi silinebilmeli.
         ReusableMethods.waitForVisibility(hotelmycamppage.htlsuccessfullyDeletedYazi,2);
         Assert.assertTrue(hotelmycamppage.htlsuccessfullyDeletedYazi.isDisplayed());
@@ -141,4 +124,5 @@ public class Us0005 extends TestBaseRapor{
         ReusableMethods.waitFor(1);
         extentTest.pass("Hotel successfully deleted yazisi gorundu ve OK butonuna tiklandi.");
     }
+
 }
