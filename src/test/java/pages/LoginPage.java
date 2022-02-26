@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 import utilities.ConfigReader;
 import utilities.Driver;
+import utilities.ReusableMethods;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -84,8 +85,10 @@ public class LoginPage {
     public WebElement reservationMassage;
     @FindBy(xpath = "//input[@type='submit']")
     public WebElement rsvBookRoom;
+
     @FindBy (xpath = "(//a[@href='/Profile/ReservationDetail/1583'])[2]")
     public WebElement yourReservationHere;
+
     @FindBy(xpath = "//div[@class='bootbox-body']")
     public WebElement basarilireseveYazisi;
     @FindBy(xpath = "//a[@href='/profile/Reservations']")
@@ -102,6 +105,7 @@ public class LoginPage {
     public WebElement reservationGorunum;
 @FindBy(xpath = "//a[text()='ListOfUsers']")
         public WebElement listofusers;
+
     Actions actions=new Actions(Driver.getDriver());
     Faker faker=new Faker();
     SoftAssert softAssert=new SoftAssert();
@@ -154,7 +158,14 @@ public class LoginPage {
     }
     @FindBy(id = "checkin_date")
     public WebElement reservationdate;
-
+    //  ----
+@FindBy(xpath = "(//a[@class='nav-link'])[7]")
+public WebElement profile;
+@FindBy(xpath = "//a[@href='/profile/Reservations']")
+public WebElement reservations;
+@FindBy(xpath = "(//a[@class='nav-link'])[8]")
+public WebElement logout;
+//-----
     public void reservationRoom() throws InterruptedException {
         reservationRooms.click();
         ilkoda.click();
@@ -166,22 +177,29 @@ public class LoginPage {
         dropboxrandomsecim(reservationChildrenCount);
         actions.sendKeys(Keys.PAGE_DOWN).perform();
         reservationCCname.sendKeys("free");
+        ReusableMethods.waitForVisibility(reservationCCnumber,2);
         reservationCCnumber.sendKeys("0000000000000000");
         dropboxrandomsecim(rsvCrdtCrdExYear);
         dropboxrandomsecim(rsvCrdCrdExMonth);
-        Thread.sleep(2000);
+        ReusableMethods.waitForVisibility(rsvCCardCVV,2);
         rsvCCardCVV.sendKeys("000");
         reservationMassage.sendKeys("I like this Game");
         rsvBookRoom.click();
         Driver.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         Thread.sleep(3000);
         resevervationSonrasiOk.click();
+       /* Actions actions=new Actions(Driver.getDriver());
         actions.sendKeys(Keys.PAGE_UP).
-                sendKeys(Keys.PAGE_UP).perform();
+                sendKeys(Keys.PAGE_UP).sendKeys(Keys.PAGE_UP).sendKeys(Keys.PAGE_UP).perform();
+        ReusableMethods.waitForVisibility(yourReservationHere,2);
         yourReservationHere.click();
 
-
-
+*///-------
+        ReusableMethods.waitForVisibility(profile,2);
+        profile.click();
+        ReusableMethods.waitForVisibility(reservations,2);
+reservations.click();
+//------
     }
     public void negativelogin(){
         Driver.getDriver().get(ConfigReader.getProperty("HMCUrl"));

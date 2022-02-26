@@ -104,5 +104,7 @@ public class US0010 extends TestBaseRapor {
         softAssert.assertAll();
        // Assert.assertTrue(loginPage.reservationGorunum.isDisplayed());
         extentTest.pass("oda reserve edildigi test edildi");
+        ReusableMethods.waitForVisibility(loginPage.logout,2);
+        loginPage.logout.click();
     }
 }
